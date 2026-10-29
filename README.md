@@ -200,3 +200,7 @@ Framework knowledge: [Playwright documentation](https://playwright.dev), [Playwr
 - Playwright captures traces on first retry and screenshots on failure; both ride inside the HTML report that CI stores as an artifact.
 
 Why no logging library, and what was rejected instead: docs/design-decisions.md → "Diagnostics: native Playwright".
+
+## Development Conventions
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for repository conventions, coding standards, and instructions for adding tests.

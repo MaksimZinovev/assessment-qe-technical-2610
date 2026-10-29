@@ -10,7 +10,7 @@ import "@dotenvx/dotenvx/config";
 export default defineConfig({
 	retries: 2,
 	workers: 3, // modest — both targets are shared public third-party sites
-	reporter: [["html", { open: "never" }]],
+	reporter: [["list"], ["html", { open: "never" }]],
 	forbidOnly: !!process.env.CI,
 	use: {
 		trace: "on-first-retry",

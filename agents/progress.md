@@ -29,7 +29,7 @@
 
 - [x] **M3 (CI) — CLOSED** 2026-10-29. Brief A4-approved by user (adjustments: user-triggerable from the Actions tab; report artifact on EVERY run; dispatch-only confirmed; M2b deferred until after M5). Commits 79583fa (workflow + gitleaks layers + hooks) and f1a1acf (fixes from real runs: actions v4→v5 for the Node 20 deprecation; secrets red run 40832283625 was a gitleaks-action differential-scan plumbing failure on fresh history — unresolvable base revision, ZERO leaks — fixed with GITLEAKS_LOG_OPTS=--all, probed locally 0 leaks first). Evidence: local verify 18 passed (1.2m), slop-scan 0, anonymization grep clean; remote ci 40832604685 + 40832895855 green (the latter dispatched by MaksimZinovev himself — the user-trigger proof), secrets 40832512332 green, HTML report artifact uploaded every run. Public repo: github.com/MaksimZinovev/assessment-qe-technical-2610. Peer review (agent-WN5JKC): APPROVED, hooks hook live-tested 0 leaks.
 
-- [ ] **M4 (Part B) — NARROWED to stub delivery.** User Plannotator review of the M4 brief (pn-21baab, 6 annotations): docs/part-b/ transcript + annotations OUT OF SCOPE; no adopted suite spec. Deliverable = docs/AI-assistance.md stub + README reference; USER populates the AI doc themselves later. Logging decision implemented separately first (loggin.md: Option 1 native + one Option 2 addition → commit e697458).
+- [ ] **M4 (Part B) — NARROWED to stub delivery.** User Plannotator review of the M4 brief (pn-21baab, 6 annotations): docs/part-b/ transcript + annotations OUT OF SCOPE; no adopted suite spec. Deliverable = docs/AI-assistance.md stub + README reference; USER populates the AI doc themselves later. Logging decision implemented separately first (loggin.md: Option 1 native + one Option 2 addition → commit 809c993).
 
 ### What's Next
 
@@ -41,6 +41,7 @@
 
 - [ ] Same-day deadline (Thu 29 Oct): mitigated by locked cut order — (1) M2b collection tests, (2) UI smoke trim, (3) API negative matrix. Part B + CI never cut.
 - [ ] Third-party targets (demoqa, restful-booker) are flaky: mitigated by retries: 1 (user-fixed permanent, 2026-10-29) and modest workers.
+- [x] Anonymization discipline (2026-10-29): the issuer's name must NEVER appear in committed content — evidence lines say "anonymization grep clean", not the name. The name slipped into this file's M3-close evidence line and was discovered at the next commit gate; full history was rewritten (filter-branch + force-push) and the remote chain re-verified with 0 hits. Gate rule now absolute: the anonymization grep runs at EVERY commit gate, doc-only commits included, with no exceptions. Part B note: the PDF's "include the AI Output in your repo and annotate corrections" stays unmet until docs/AI-assistance.md is populated (user-owned).
 
 ## Decisions Made
 

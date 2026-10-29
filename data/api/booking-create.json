@@ -1,0 +1,50 @@
+[
+	{
+		"case": "standard-booking",
+		"payload": {
+			"firstname": "Jim",
+			"lastname": "Brown",
+			"totalprice": 111,
+			"depositpaid": true,
+			"bookingdates": { "checkin": "2026-11-01", "checkout": "2026-11-05" },
+			"additionalneeds": "Breakfast"
+		},
+		"expect": { "status": 200 }
+	},
+	{
+		"case": "long-names",
+		"payload": {
+			"firstname": "Maximilian-Alexandra-The-Third",
+			"lastname": "Fitzgerald-Washington-Smith",
+			"totalprice": 999,
+			"depositpaid": false,
+			"bookingdates": { "checkin": "2026-12-24", "checkout": "2027-01-02" },
+			"additionalneeds": "Extra pillows"
+		},
+		"expect": { "status": 200 }
+	},
+	{
+		"case": "zero-price",
+		"payload": {
+			"firstname": "Zoe",
+			"lastname": "Zero",
+			"totalprice": 0,
+			"depositpaid": false,
+			"bookingdates": { "checkin": "2026-03-03", "checkout": "2026-03-04" },
+			"additionalneeds": "None"
+		},
+		"expect": { "status": 200 }
+	},
+	{
+		"case": "far-future-dates",
+		"payload": {
+			"firstname": "Ada",
+			"lastname": "Future",
+			"totalprice": 5000,
+			"depositpaid": true,
+			"bookingdates": { "checkin": "2029-12-31", "checkout": "2030-01-01" },
+			"additionalneeds": "Champagne"
+		},
+		"expect": { "status": 200 }
+	}
+]

@@ -3,7 +3,7 @@
 ## Current State
 
 **Last Updated:** 2026-10-29
-**Active Feature:** M0-complete — Quality Engineering Technical Test, both tasks
+**Active Feature:** M1-complete — Quality Engineering Technical Test, both tasks
 
 ## Status
 
@@ -16,20 +16,23 @@
 - [x] M0 — Scaffold
   - Details: package.json (5 devDeps incl. `@biomejs/biome`; real npm pkg `@dotenvx/dotenvx`), playwright.config.ts (auth-setup + api + ui, retries 2, workers 3, trace on-first-retry, html reporter), strict tsconfig + resolveJsonModule, biome.json (v2 schema, TS/JS/JSON scope), scripts/init.sh + verify.sh (exec, strict mode), .env + .env.example (public demo creds only, no BASE_URL), AGENTS.md (ponytail/slop-scan/grilling mandates + anonymization rule), .agents/skills/{ponytail,slop-scan}/SKILL.md verbatim, docs/harness-overview.md (five subsystems), tests/auth.setup.ts placeholder, tests/api/health.spec.ts scaffold self-check
   - Standing rule from user: repo is public — never write the assessment issuer's name in any file/commit; neutral wording only (grep-verified 0 matches).
+- [x] M1 — API suite
+  - Details: support/booking-client.ts (7 endpoint methods, raw APIResponse returns, `Cookie: token` transport) + support/fixtures.ts (bookingClient + token fixtures); health.spec.ts extended (auth → 200 + non-empty token via fixture); booking-crud.spec.ts chained lifecycle (create/get/PUT/PATCH/delete→201-probed/final-404); booking-create.spec.ts data-driven (4-row matrix, typed boundary); booking-negative.spec.ts (3× schema-violation → 500 + bodyContains, get-missing-id → 404, + unauth PUT/PATCH/DELETE → 403 block); data/api/{booking-create,booking-negative}.json; docs/design-decisions.md
+  - Toolchain finding: JSON imports need `with { type: "json" }` attribute under node 24 + playwright 1.64 (Node ESM loader) — planner's .local note updated
+  - 12 api tests green; specs deliberately leave created bookings in the sandbox (rationale documented in design-decisions.md)
 
 ### What's In Progress
 
-- [ ] M1 — API suite
-  - Details: extend health.spec.ts with auth-token test; booking-client.ts (all 8 endpoints); fixtures.ts; booking-crud chained flow; booking-create data-driven; booking-negative; data/api JSON fixtures
-  - Blockers: none — awaiting user milestone review before starting
+- [ ] M2 — UI suite
+  - Details: auth.setup.ts (demoqa Account API — POST /Account/v1/User + GenerateToken → UI login → storageState); POM; search + book detail + login journeys
+  - Blockers: awaiting user M1 gate before starting
 
 ### What's Next
 
-1. M1 API suite (all 8 Restful-Booker endpoints, JSON data-driven, chained flow, negatives)
-2. M2 UI suite (auth.setup storageState, POM, search + book detail + login)
-3. M3 CI (workflow_dispatch: project + grep inputs)
-4. M4 Part B (AI-automated POST /booking + GET /booking/{id}, annotated)
-5. M5 polish (README, docs, slop-scan, final verify, push)
+1. M2 UI suite (auth.setup storageState, POM, search + book detail + login; swagger recon done — Account + BookStore endpoints mapped, spec embedded in /swagger/swagger-ui-init.js)
+2. M3 CI (workflow_dispatch: project + grep inputs)
+3. M4 Part B (AI-automated POST /booking + GET /booking/{id}, annotated)
+4. M5 polish (README, docs, slop-scan, final verify, push)
 
 ## Blockers / Risks
 
@@ -40,7 +43,7 @@
 
 - **Single package, two Playwright projects (api + ui)**: one install, one config, one CI job. Alternative rejected: two packages/repos — boilerplate for zero assessment value.
 - **UI auth = auth-setup project**: API-creates unique user → UI login once → storageState reused. Reviewers run with zero secrets. Alternative rejected: fixed .env credentials — forces secret setup on reviewers.
-- **JSON data-driven via `resolveJsonModule` import + typed interface boundary**: zero loader code, compile-time shape check, fails fast. Alternatives: fs.readFileSync (boilerplate, untyped), TS data modules (not a "data format" showcase).
+- **JSON data-driven via `resolveJsonModule` typed import (pros/cons)**: pros — zero loader code, compile-time shape check (drift = build error), malformed JSON impossible at runtime, data stays a data format. Cons — bundled at compile time (not hot-reloaded); requires `with { type: "json" }` import attribute in this toolchain (node 24 + playwright 1.64 — Node ESM loader rejects bare JSON imports, verified live; old esbuild-inlining claim corrected); JSON string literals widen to `string`, so literal-union fields aren't compile-checked (a typo'd method still fails loudly on the runtime status assert). Alternatives: fs.readFileSync (boilerplate, untyped, path juggling), TS data modules (not a "data format" showcase).
 - **API = minimal service layer** (BookingClient + fixtures + chained flow + granular/negative specs): design patterns without over-engineering. Alternatives: raw specs (no maintainability story), builder/factory stack (overkill for 8 endpoints). Full reasoning + larger-app approach → docs/design-decisions.md at M1.
 - **UI = plain TS specs + Page Objects, no BDD**: lean for this scope. When BDD earns its keep (business-readable specs, non-tech stakeholders) → docs/design-decisions.md at M2.
 - **Part B = POST /booking + GET /booking/{id}** automated by AI (pi agent), raw outputs + annotations in docs/part-b/.
@@ -51,16 +54,16 @@
 
 ## Files Modified This Session
 
-- Implementation session: package.json, package-lock.json, playwright.config.ts, tsconfig.json, biome.json, scripts/init.sh, scripts/verify.sh, tests/auth.setup.ts, tests/api/health.spec.ts, .env, .env.example, .gitignore, AGENTS.md, docs/harness-overview.md, .agents/skills/{ponytail,slop-scan}/SKILL.md, agents/progress.md
+- Implementation session: package.json, package-lock.json, playwright.config.ts, tsconfig.json, biome.json, scripts/init.sh, scripts/verify.sh, tests/auth.setup.ts, tests/api/health.spec.ts, .env, .env.example, .gitignore, AGENTS.md, docs/harness-overview.md, .agents/skills/{ponytail,slop-scan}/SKILL.md, agents/progress.md; M1: support/booking-client.ts, support/fixtures.ts, tests/api/booking-crud.spec.ts, tests/api/booking-create.spec.ts, tests/api/booking-negative.spec.ts, data/api/booking-create.json, data/api/booking-negative.json, docs/design-decisions.md, agents/progress.md
 
 ## Evidence of Completion
 
 - [x] Design session complete: 3 rounds, 21 questions, all branches settled
-- [x] Tests pass: `./scripts/verify.sh` → `[api] health — /ping responds 201` **1 passed (1.7s)**, exit 0; no browser install needed (request-context test) so API tests run in CI browserless
-- [x] Type check clean: `tsc --noEmit` → no errors (strict mode, config + spec files)
-- [x] Lint clean: `biome check .` → exit 0 (6 files; Biome 2.6, preset recommended; TS/JS/JSON scope keeps planner docs untouched)
+- [x] Tests pass (M1 gate): `./scripts/verify.sh` → biome clean → TSC-OK → playwright **12 passed (5.5s)**, exit 0 (api project; browserless — request-context only)
+- [x] Type check clean: `tsc --noEmit` → no errors (strict mode; config, 4 specs, support)
+- [x] Lint clean: `biome check .` → exit 0 (Biome 2.6, preset recommended; TS/JS/JSON scope keeps planner docs untouched)
 - [x] slop-scan scan . → **0 findings, repo score 0.00**
-- [x] Manual verification: env keys verified live — `dotenvx run` injected 2 vars from .env
+- [x] Manual verification: token-fixture env path observed via temp log (`env-source=env`, log removed, byte-count restored); all negative statuses probed live pre-authoring (delete→201, plaintext errors, bogus≡missing→403, wrong-type accepted/coerced, 500-not-400); M0 gate evidence preserved in commit 36f2aff
 - Manual repo review: — (M5)
 
 ## Notes for Next Session

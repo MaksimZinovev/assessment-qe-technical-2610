@@ -1,0 +1,41 @@
+[
+	{
+		"case": "create-missing-totalprice",
+		"method": "POST",
+		"path": "/booking",
+		"body": {
+			"firstname": "Nelly",
+			"lastname": "Negative",
+			"depositpaid": true,
+			"bookingdates": { "checkin": "2026-01-01", "checkout": "2026-01-05" },
+			"additionalneeds": "None"
+		},
+		"expect": { "status": 500, "bodyContains": "Internal Server Error" }
+	},
+	{
+		"case": "create-missing-bookingdates",
+		"method": "POST",
+		"path": "/booking",
+		"body": {
+			"firstname": "Nelly",
+			"lastname": "Negative",
+			"totalprice": 100,
+			"depositpaid": true,
+			"additionalneeds": "None"
+		},
+		"expect": { "status": 500, "bodyContains": "Internal Server Error" }
+	},
+	{
+		"case": "create-empty-body",
+		"method": "POST",
+		"path": "/booking",
+		"body": {},
+		"expect": { "status": 500, "bodyContains": "Internal Server Error" }
+	},
+	{
+		"case": "get-missing-id",
+		"method": "GET",
+		"path": "/booking/99999999",
+		"expect": { "status": 404, "bodyContains": "Not Found" }
+	}
+]

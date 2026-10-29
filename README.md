@@ -7,14 +7,13 @@ Automated tests for a two-part Quality Engineering exercise:
 - **Task 1 - Web UI**: the demoqa [Book Store](https://demoqa.com/books) site - login, table search, book details. Playwright + TypeScript, Page Object pattern.
 - **Task 2 - REST API**: the [Restful-Booker](https://restful-booker.herokuapp.com/) API - health, auth, full booking CRUD plus negative paths. Same framework, service-object pattern.
 
-Goals:  demonstrate coding style and the techniques  selected for this assessment, ability to adhere to developing code using
-design patterns and techniques to make code & test data maintainable; ability to develop code that can be tied to Continuous Delivery infrastructure.
+Goals: show coding style, use design patterns that keep code and test data maintainable, and produce a build ready to wire into Continuous Delivery infrastructure.
 
-Both suites share one package and run as three Playwright projects: `auth-setup`, `api`, `ui`.
+Both suites share one package and run as four Playwright projects: `auth-setup`, `api`, `ui`, and `ui-firefox`, which re-runs the UI suite on Firefox.
 
-The framework is intentionally small. The goal is to demonstrate most important concepts and patterns, sound design choices and a working CI/CD foundation, not to build infrastructure that the assessment doesn't require.
+The framework stays small on purpose. It demonstrates the ideas that matter for this scope, plus a CI/CD run anyone can reproduce. Anything the task doesn't require stays out of the repo.
 
-![screnshot](assets/screnshot.png)
+![Screenshot of the suites in the Playwright HTML report](assets/screnshot.png)
 
 ## Quick start
 
@@ -46,11 +45,11 @@ cd assessment-qe-technical-2610
 
 ### Environment configuration
 
-Base URLs and the environment name live in `.env` and are loaded by dotenvx into the Playwright config, which assigns each project its `baseURL`, validates the values, and prints the active environment at startup. Tests and Page Objects use relative URLs only - changing the target environment never touches test code. Real secrets would be stored outside version control or encrypted with dotenvx; `npx dotenvx run -f .env.uat -- npm run test-api` is the same mechanism with a dedicated env file.
+Base URLs and the environment name live in `.env`. dotenvx loads them into the Playwright config, which assigns each project its `baseURL`, validates the values, and prints the active environment at startup. Tests and Page Objects use relative URLs only - changing the target environment never touches test code. Real secrets would be stored outside version control or encrypted with dotenvx; `npx dotenvx run -f .env.uat -- npm run test-api` is the same mechanism with a dedicated env file.
 
 ## Task notes
 
-Requirements are the task's own wording; the comment points at the file and place in the repo that implements it. Full test titles: `npx playwright test --list`.
+Requirements are the task's own wording. Each comment points to the file in this repo that implements it. Full test titles: `npx playwright test --list`.
 
 ### Task 1 - Web UI automation (Book Store)
 
@@ -68,7 +67,7 @@ Requirements are the task's own wording; the comment points at the file and plac
 
 | No | Requirement | Comment |
 | --- | --- | --- |
-| 1 | Suite using the endpoints from the API docs | `support/booking-client.ts` → covers ping, POST /auth, GET /booking, GET/PUT/PATCH/DELETE /booking/:id, POST /booking - all eight documented endpoints exercised (ids list by `tests/api/booking-crud.spec.ts` → booking list test) |
+| 1 | Suite using the endpoints from the API docs | `support/booking-client.ts` → covers ping, POST /auth, GET /booking, GET/PUT/PATCH/DELETE /booking/:id, POST /booking - all eight documented endpoints exercised; the booking list test in `tests/api/booking-crud.spec.ts` asserts the ids index |
 | 2 | Data-driven approach, appropriate data format | `data/api/booking-create.json` + `data/api/booking-negative.json` → cases imported as typed JSON (`with { type: "json" }`), one spec file per concern |
 | 3 | Positive and negative scenarios | `tests/api/booking-create.spec.ts` (4 positive rows) vs `tests/api/booking-negative.spec.ts` (5 cases: schema violations, missing id, unauth 403) |
 | 4 | Values flow between endpoints | `tests/api/booking-crud.spec.ts` → booking lifecycle test: id from POST reused by GET/PUT/PATCH/DELETE; token arrives from POST /auth via the `token` fixture |
@@ -140,7 +139,7 @@ How the repo steers AI agents on this build: `docs/harness-overview.md`.
 
 **19 scenarios · 8 files · 4 Playwright projects**
 
-The same 5 UI scenarios re-run on Firefox as the `ui-firefox` project (same cookie-based auth, so `npm run test-firefox` covers it) - 24 runs in total.
+The same 5 UI scenarios re-run on Firefox as the `ui-firefox` project, still on cookie-based auth, so `npm run test-firefox` covers them. 24 runs total.
 
 - **Authentication Setup** (1)
   - API user creation → UI login → session persistence.
@@ -162,21 +161,21 @@ The same 5 UI scenarios re-run on Firefox as the `ui-firefox` project (same cook
 
 ## AI assistance
 
-How AI tooling was used and validated: [docs/AI-assistance.md](docs/AI-assistance.md). Please also see section below "AI agent harness"
+How AI tooling was used and how it was validated: [docs/AI-assistance.md](docs/AI-assistance.md). See also [AI agent harness](#ai-agent-harness) below.
 
 ## AI agent harness
 
-> the software infrastructure that enables a language model to perform tasks by providing tools, memory, execution environments, and guardrails. It essentially transforms a model into an operational agent capable of completing real-world tasks rather than just responding to prompts.
+A harness is the software that gives a language model tools, memory, an execution environment, and guardrails so it can do real work instead of only answering prompts.
 
-The build was also an agent-harness exercise: AI agents did the implementation, and the repository carries their rules and memory.
+AI agents wrote the implementation. The repository carries their rules and memory.
 
 - [AGENTS.md](AGENTS.md) - standing agent rules: minimal-code mandate, quality gate before every commit, tool hierarchy.
 - [agents/progress.md](agents/progress.md) - agent state log: milestone briefs, checkpoints, decisions; work survives session boundaries.
 - [.agents/skills/](.agents/skills/) - this repo's vendored skills ([agentskills.io](https://agentskills.io) spec):
   - [ponytail](https://github.com/DietrichGebert/ponytail) - forces the smallest code that works; no speculative layers.
-  - [slop-scan](https://github.com/modem-dev/slop-scan)- detects AI-associated slop in JS/TS code before commits.
+  - [slop-scan](https://github.com/modem-dev/slop-scan) - detects AI-associated slop in JS/TS code before commits.
   - [unslop](https://github.com/cursor/plugins/blob/main/pstack/skills/unslop/SKILL.md) - cuts AI tells from any writing.
-- [grill-me](https://github.com/mattpocock/skills/blob/main/skills/productivity/grilling/SKILL.md)- a relentless interview that sharpens a plan or design before implementation.
+- [grill-me](https://github.com/mattpocock/skills/blob/main/skills/productivity/grilling/SKILL.md) - a relentless interview that sharpens a plan or design before implementation.
 - [playwright](https://github.com/MaksimZinovev/pi-agent-config/blob/main/skills/playwright/SKILL.md) - my own skill, Playwright-specific guidance (locators, fixtures, config) applied while writing the suites.
 - [ego-browser](https://github.com/citrolabs/ego-lite/blob/main/skills/ego-browser/SKILL.md) - Chromium browser operated by users and AI agents for browser automation, QA, and app review.
 - [learn-harness-engineering](https://github.com/walkinglabs/learn-harness-engineering) - harness engineering beginner tutorial, from 0 to 1.
@@ -198,6 +197,6 @@ Framework knowledge: [Playwright documentation](https://playwright.dev), [Playwr
 - API client lines: `[booking] POST /booking (Crud Journey) → 200` from `console.info` in `support/booking-client.ts` - plain terminal runs stay debuggable.
 - In-test steps: `test.step()` names the phases in every spec; the CRUD journey reads as get → PUT → PATCH → delete + verify gone.
 - Report attachments: create-echo payloads attached as JSON in `booking-create` and `booking-crud` (payloads only - no credentials or tokens).
-- Traces are captured on first retry, screenshots on failure, and both ride inside the HTML report that CI stores as an artifact.
+- Playwright captures traces on first retry and screenshots on failure; both ride inside the HTML report that CI stores as an artifact.
 
-The reasoning (why no logging library, what was rejected): docs/design-decisions.md → "Diagnostics: native Playwright".
+Why no logging library, and what was rejected instead: docs/design-decisions.md → "Diagnostics: native Playwright".

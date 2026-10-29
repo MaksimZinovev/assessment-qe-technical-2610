@@ -184,7 +184,7 @@ The build was also an agent-harness exercise: AI agents did the implementation, 
 
 ## Design decisions
 
-Short list of the choices a reviewer will notice first; full reasoning in `docs/design-decisions.md`, and the framework-design checklist — how would you design a good test automation framework — is at [docs/framework-design.md](docs/framework-design.md).
+This is a short version; full reasoning in `docs/design-decisions.md`, and the framework-design checklist - how would you design a good test automation framework - is at [docs/framework-design.md](docs/framework-design.md).
 
 - Data-driven tests via typed JSON imports - shape drift is a compile error, no loader code.
 - API suites stay thin: a typed service object (`BookingClient`) plus a small fixture layer.

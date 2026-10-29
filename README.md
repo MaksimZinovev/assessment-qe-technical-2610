@@ -117,6 +117,17 @@ How the repo steers AI agents on this build: `docs/harness-overview.md`.
 
 How AI tooling was used and validated: [docs/AI-assistance.md](docs/AI-assistance.md).
 
+## AI agent harness
+
+The build was also an agent-harness exercise: AI agents did the implementation, and the repository carries their rules and memory.
+
+- [AGENTS.md](AGENTS.md) — standing agent rules: minimal-code mandate, quality gate before every commit, tool hierarchy.
+- [agents/progress.md](agents/progress.md) — agent state log: milestone briefs, checkpoints, decisions; work survives session boundaries.
+- [.agents/skills/](.agents/skills/) — vendored skills in the [agentskills.io](https://agentskills.io) spec: `ponytail` (fewest lines that work), `slop-scan` (AI-slop checks before commits).
+- [scripts/verify.sh](scripts/verify.sh) + [ci.yml](.github/workflows/ci.yml) — the gate agents check their work against before reporting; GitHub Actions re-runs it independently on dispatch.
+- Learnings reused selectively from previous public builds: [assessment-qa-engineer-nsw-revenue](https://github.com/MaksimZinovev/assessment-qa-engineer-nsw-revenue) (Playwright API suite), [automation-bookstore-yaml](https://github.com/MaksimZinovev/automation-bookstore-yaml) (Azure DevOps multi-stage pipeline), [tau-advanced-playwright](https://github.com/MaksimZinovev/tau-advanced-playwright) (Advanced Playwright course).
+- Framework knowledge: [Playwright documentation](https://playwright.dev), [Playwright Solutions](https://playwrightsolutions.com) patterns, lint via [Biome's Playwright domain](https://biomejs.dev/).
+
 ## Design decisions
 
 Short list of the choices a reviewer will notice first; full reasoning in `docs/design-decisions.md`:

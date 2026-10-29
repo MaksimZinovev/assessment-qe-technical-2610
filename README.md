@@ -14,6 +14,8 @@ Both suites share one package and run as three Playwright projects: `auth-setup`
 
 The framework is intentionally small. The goal is to demonstrate most important concepts and patterns, sound design choices and a working CI/CD foundation, not to build infrastructure that the assessment doesn't require.
 
+![screnshot](assets/screnshot.png)
+
 ## Quick start
 
 Prerequisites: Node.js LTS (CI runs Node 24).
@@ -171,7 +173,7 @@ The build was also an agent-harness exercise: AI agents did the implementation, 
 - [.agents/skills/](.agents/skills/) - this repo's vendored skills ([agentskills.io](https://agentskills.io) spec):
   - [ponytail](https://github.com/DietrichGebert/ponytail) - forces the smallest code that works; no speculative layers.
   - [slop-scan](https://github.com/modem-dev/slop-scan)- detects AI-associated slop in JS/TS code before commits.
-  - [unslop](https://github.com/cursor/plugins/blob/main/pstack/skills/unslop/SKILL.md)- cuts AI tells from any writing.
+  - [unslop](https://github.com/cursor/plugins/blob/main/pstack/skills/unslop/SKILL.md) - cuts AI tells from any writing.
 - [grill-me](https://github.com/mattpocock/skills/blob/main/skills/productivity/grilling/SKILL.md)- a relentless interview that sharpens a plan or design before implementation.
 - [playwright](https://github.com/MaksimZinovev/pi-agent-config/blob/main/skills/playwright/SKILL.md) - my own skill, Playwright-specific guidance (locators, fixtures, config) applied while writing the suites.
 - [ego-browser](https://github.com/citrolabs/ego-lite/blob/main/skills/ego-browser/SKILL.md) - Chromium browser operated by users and AI agents for browser automation, QA, and app review.

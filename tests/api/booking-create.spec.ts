@@ -19,7 +19,9 @@ const cases: BookingCase[] = rawCases;
 
 test.describe("booking create", () => {
 	for (const { case: name, payload, expect: expected } of cases) {
-		test(`create booking — ${name}`, async ({ bookingClient }) => {
+		test(`create booking — ${name}`, {
+			tag: name === "standard-booking" ? "@smoke" : undefined,
+		}, async ({ bookingClient }) => {
 			await test.step("create booking and assert the echoed payload", async () => {
 				const response = await bookingClient.createBooking(payload);
 				expect(

@@ -1,6 +1,6 @@
 import { expect, test } from "../../support/fixtures";
 
-test("health — /ping responds 201", async ({ request }) => {
+test("health — /ping responds 201", { tag: "@smoke" }, async ({ request }) => {
 	const response = await request.get("/ping");
 	expect(
 		response.status(),
@@ -8,6 +8,8 @@ test("health — /ping responds 201", async ({ request }) => {
 	).toBe(201);
 });
 
-test("health — auth returns a non-empty token", async ({ token }) => {
+test("health — auth returns a non-empty token", { tag: "@smoke" }, async ({
+	token,
+}) => {
 	expect(token, "auth fixture should yield a non-empty token").toBeTruthy();
 });

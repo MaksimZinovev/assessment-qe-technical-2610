@@ -8,6 +8,7 @@
 		"verify": "bash ./scripts/verify.sh",
 		"test-api": "playwright test --project=api",
 		"test-ui": "playwright test --project=ui",
+		"test-smoke": "playwright test --grep @smoke",
 		"lint": "biome check .",
 		"typecheck": "tsc --noEmit"
 	},

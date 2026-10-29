@@ -5,10 +5,9 @@ import { DEMOQA_PASSWORD } from "../../support/demoqa-credentials";
 
 test.setTimeout(120_000); // longest journey: restore → logout → re-login
 
-test("tc-006 login journey — restored session, logout, re-login", async ({
-	page,
-	context,
-}) => {
+test("tc-006 login journey — restored session, logout, re-login", {
+	tag: "@smoke",
+}, async ({ page, context }) => {
 	const userName = (await context.cookies()).find(
 		(c) => c.name === "userName",
 	)?.value;

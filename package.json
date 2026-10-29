@@ -1,0 +1,21 @@
+{
+	"name": "assessment-qe-technical-2610",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"init": "bash ./scripts/init.sh",
+		"verify": "bash ./scripts/verify.sh",
+		"test-api": "playwright test --project=api",
+		"test-ui": "playwright test --project=ui",
+		"lint": "biome check .",
+		"typecheck": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.0.0",
+		"@dotenvx/dotenvx": "^1.0.0",
+		"@playwright/test": "^1.56.0",
+		"@types/node": "^24.0.0",
+		"typescript": "^5.5.0"
+	}
+}

@@ -1,0 +1,39 @@
+import { defineConfig } from "@playwright/test";
+import "@dotenvx/dotenvx/config";
+
+/**
+ * Single package, three Playwright projects:
+ *  - auth-setup  creates the DemoQA storageState once (tests/auth.setup.ts → .auth/state.json)
+ *  - api         Restful-Booker suite (tests/api), no browser auth needed
+ *  - ui          Book Store suite (tests/ui), reuses the storageState after auth-setup
+ */
+export default defineConfig({
+	retries: 2,
+	workers: 3, // modest — both targets are shared public third-party sites
+	reporter: [["html", { open: "never" }]],
+	forbidOnly: !!process.env.CI,
+	use: {
+		trace: "on-first-retry",
+	},
+	projects: [
+		{
+			name: "auth-setup",
+			testMatch: "**/auth.setup.ts",
+		},
+		{
+			name: "api",
+			testDir: "tests/api",
+			fullyParallel: true,
+			use: { baseURL: "https://restful-booker.herokuapp.com" },
+		},
+		{
+			name: "ui",
+			testDir: "tests/ui",
+			dependencies: ["auth-setup"],
+			use: {
+				baseURL: "https://demoqa.com",
+				storageState: ".auth/state.json",
+			},
+		},
+	],
+});

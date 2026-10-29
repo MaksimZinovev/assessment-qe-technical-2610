@@ -3,7 +3,7 @@
 ## Current State
 
 **Last Updated:** 2026-10-29
-**Active Feature:** planning-complete — Quality Engineering Technical Test, both tasks
+**Active Feature:** M0-complete — Quality Engineering Technical Test, both tasks
 
 ## Status
 
@@ -13,21 +13,23 @@
 - [x] Design session (grilling skill, 3 interview rounds, 21 questions) — design tree fully settled, 0 open branches
 - [x] Project structure agreed and locked (single package, two Playwright projects)
 - [x] Time budget agreed: 4–8h, due same day
+- [x] M0 — Scaffold
+  - Details: package.json (5 devDeps incl. `@biomejs/biome`; real npm pkg `@dotenvx/dotenvx`), playwright.config.ts (auth-setup + api + ui, retries 2, workers 3, trace on-first-retry, html reporter), strict tsconfig + resolveJsonModule, biome.json (v2 schema, TS/JS/JSON scope), scripts/init.sh + verify.sh (exec, strict mode), .env + .env.example (public demo creds only, no BASE_URL), AGENTS.md (ponytail/slop-scan/grilling mandates + anonymization rule), .agents/skills/{ponytail,slop-scan}/SKILL.md verbatim, docs/harness-overview.md (five subsystems), tests/auth.setup.ts placeholder, tests/api/health.spec.ts scaffold self-check
+  - Standing rule from user: repo is public — never write the assessment issuer's name in any file/commit; neutral wording only (grep-verified 0 matches).
 
 ### What's In Progress
 
-- [ ] M0 — Scaffold
-  - Details: package.json, playwright.config.ts (auth-setup + api + ui projects), tsconfig (resolveJsonModule), biome, AGENTS.md, scripts/init.sh + verify.sh, .env + .env.example, vendored skills
-  - Blockers: none
+- [ ] M1 — API suite
+  - Details: extend health.spec.ts with auth-token test; booking-client.ts (all 8 endpoints); fixtures.ts; booking-crud chained flow; booking-create data-driven; booking-negative; data/api JSON fixtures
+  - Blockers: none — awaiting user milestone review before starting
 
 ### What's Next
 
-1. M0 scaffold → gate: verify.sh green, commit
-2. M1 API suite (all 8 Restful-Booker endpoints, JSON data-driven, chained flow, negatives)
-3. M2 UI suite (auth.setup storageState, POM, search + book detail + login)
-4. M3 CI (workflow_dispatch: project + grep inputs)
-5. M4 Part B (AI-automated POST /booking + GET /booking/{id}, annotated)
-6. M5 polish (README, docs, slop-scan, final verify, push)
+1. M1 API suite (all 8 Restful-Booker endpoints, JSON data-driven, chained flow, negatives)
+2. M2 UI suite (auth.setup storageState, POM, search + book detail + login)
+3. M3 CI (workflow_dispatch: project + grep inputs)
+4. M4 Part B (AI-automated POST /booking + GET /booking/{id}, annotated)
+5. M5 polish (README, docs, slop-scan, final verify, push)
 
 ## Blockers / Risks
 
@@ -49,17 +51,17 @@
 
 ## Files Modified This Session
 
-- `agents/progress.md` - populated from template with locked plan
-- `INTENT.md` - user-added references (ponytail, slop-scan, grill-me, Biome, TS, Playwright)
-- (internal, gitignored) `.local/grilling-decisions.md` - full decision record
-- (internal, gitignored) `.local/resolve-json-module-example.md` - JSON loading explainer
+- Implementation session: package.json, package-lock.json, playwright.config.ts, tsconfig.json, biome.json, scripts/init.sh, scripts/verify.sh, tests/auth.setup.ts, tests/api/health.spec.ts, .env, .env.example, .gitignore, AGENTS.md, docs/harness-overview.md, .agents/skills/{ponytail,slop-scan}/SKILL.md, agents/progress.md
 
 ## Evidence of Completion
 
 - [x] Design session complete: 3 rounds, 21 questions, all branches settled
-- [ ] Tests pass: — (no code yet; M0 starts next)
-- [ ] Type check clean: — (M0)
-- [ ] Manual verification: — (M5)
+- [x] Tests pass: `./scripts/verify.sh` → `[api] health — /ping responds 201` **1 passed (1.7s)**, exit 0; no browser install needed (request-context test) so API tests run in CI browserless
+- [x] Type check clean: `tsc --noEmit` → no errors (strict mode, config + spec files)
+- [x] Lint clean: `biome check .` → exit 0 (6 files; Biome 2.6, preset recommended; TS/JS/JSON scope keeps planner docs untouched)
+- [x] slop-scan scan . → **0 findings, repo score 0.00**
+- [x] Manual verification: env keys verified live — `dotenvx run` injected 2 vars from .env
+- Manual repo review: — (M5)
 
 ## Notes for Next Session
 

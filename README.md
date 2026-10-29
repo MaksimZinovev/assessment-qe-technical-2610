@@ -31,6 +31,7 @@ cd assessment-qe-technical-2610
 - `npm run test-api` - Restful-Booker suite only
 - `npm run test-ui` - Book Store suite only
 - `npm run test-smoke` - smoke subset (`--grep @smoke`): ping, auth token, one standard create, tc-006 login
+- `TEST_ENV=env1 npm run test-api` - run in a named environment (Linux/Mac; same prefix works with any other script)
 - `npx playwright test tests/api/booking-crud.spec.ts` - single spec example
 - `npx playwright show-report` - open the HTML report from the last run
 - `npx playwright test --list` - all test titles without running (useful map into the tables below)
@@ -40,6 +41,10 @@ cd assessment-qe-technical-2610
 
 - `ci.yml` - manual trigger: repo → **Actions → ci → Run workflow** → project (all/api/ui) + optional grep filter. Runs the same biome → tsc → Playwright chain (retries: 1 per config) and uploads the HTML report on every run.
 - `secrets.yml` - automatic on push/PR: gitleaks full-history scan. The pre-commit hook (wired by `init.sh`) scans staged changes the same way when gitleaks is installed locally.
+
+### Environment configuration
+
+Base URLs and the environment name live in `.env` and are loaded by dotenvx into the Playwright config, which assigns each project its `baseURL`, validates the values, and prints the active environment at startup. Tests and Page Objects use relative URLs only - changing the target environment never touches test code. Real secrets would be stored outside version control or encrypted with dotenvx; `npx dotenvx run -f .env.uat -- npm run test-api` is the same mechanism with a dedicated env file.
 
 ## Task notes
 

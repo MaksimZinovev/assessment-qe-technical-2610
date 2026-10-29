@@ -2,11 +2,6 @@ import { expect, test } from "@playwright/test";
 import { LoginPage } from "../pages/login-page";
 import { DEMOQA_PASSWORD } from "../support/demoqa-credentials";
 
-// auth-setup project: runs once before the ui project (its dependency) and
-// leaves .auth/state.json behind for the ui storageState. Scoped here because
-// this project has no pinned baseURL in playwright.config.ts.
-test.use({ baseURL: "https://demoqa.com" });
-
 test("tc-001 demoqa session: create user, log in through the UI, persist state", async ({
 	request,
 	page,

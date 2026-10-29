@@ -8,7 +8,7 @@ import "@dotenvx/dotenvx/config";
  *  - ui          Book Store suite (tests/ui), reuses the storageState after auth-setup
  */
 export default defineConfig({
-	retries: 2,
+	retries: 1, // permanent for this assessment (user decision, 2026-10-29)
 	workers: 3, // modest — both targets are shared public third-party sites
 	reporter: [["list"], ["html", { open: "never" }]],
 	forbidOnly: !!process.env.CI,

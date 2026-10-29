@@ -31,3 +31,34 @@ Verified against the live API. The suite asserts these actuals — do not "fix" 
 Booking data is static JSON under `data/api/`, imported with `with { type: "json" }` — Node's ESM loader (node 24, this Playwright version) rejects bare JSON imports, a verified toolchain requirement. TypeScript checks each file's shape against a `case` interface at compile time: data drift is a build error, not a runtime failure three tests deep.
 
 Created bookings are deliberately **left** in the sandbox — 5 per run (4 create-matrix rows, 1 unauth setup). Deliberate because the sandbox is a public scratch pad of demo data; best-effort cleanup machinery needs catch-guards whose failures would become false test negatives; and deletion is already a tested assertion in the lifecycle spec. The CRUD lifecycle test is the exception that proves the pattern: it deletes what it creates because that is what it tests.
+
+---
+
+## UI suite: plain TS + Page Objects, not BDD
+
+The UI suite is plain TypeScript specs over minimal Page Objects (`login-page`, `book-store-page` — only what the specs call; the detail journey asserts page text directly because its one lookup method would have been a pass-through wrapper). Why:
+
+- **Assertions stay in the specs; page objects only name locators and actions** — the same "specs own the contract" rule as the API suite.
+- **No extra toolchain.** BDD adds a runner, step-definition glue, a second reporting surface, and one more layer where flaky locators hide. For six tests and three pages, that machinery verifies nothing on its own.
+- **Locators live in exactly one place.** On third-party UIs the locator contract is the real maintenance risk; POM solves that without ceremony.
+
+BDD earns its keep when non-technical stakeholders author and read specs in domain language and those gherkin files become living acceptance criteria. Neither is true here — the reviewers are engineers. Revisit trigger: a real product team writing acceptance tests.
+
+## Locators: probed DOM, user-facing attributes only
+
+- DemoQA auth is **cookie-based** (`token`/`userID`/`userName` cookies), not localStorage — probed, which settled both the storageState flow and the login-success assertion (`Log out` button + `User Name` header).
+- The books list is **one plain `<table>`** — an early `.rt-tr-group a` locator matched nothing (the React-table classes don't exist in this build and a union selector masked the bug during recon). All locators are role/placeholder/text anchored: `getByRole("table").getByRole("link")`, `getByPlaceholder`, `getByText`.
+- Header button text differs per page (`Logout` on /profile, `Log out` on /books) — one regex locator covers both; assertions stay page-scoped.
+
+## Test IDs (tc-XXX)
+
+User decision (2026-10-29): every UI-suite test title carries a stable `tc-XXX` id in suite order (tc-001 auth-setup persist → tc-002…004 search matrix → tc-005 detail → tc-006 login), so runs, reports, and references name a test by id rather than prose. The search-matrix ids live inside the typed JSON boundary. The API suite predates the convention and keeps prose titles.
+
+## Linting: Biome only
+
+ESLint + eslint-plugin-playwright: DEFERRED (user decision, 2026-10-29) — near-total overlap at this suite size, `test.only` already guarded by `forbidOnly` in CI, single-linter authority beats two-linter confusion. Revisit trigger: enough contributors/suites that mechanical enforcement of Playwright anti-patterns (waitForTimeout, element handles, conditional expects) pays for a second linter. Until then, Biome remains the only linter for the Playwright suite.
+
+## Credentials & teardown (UI)
+
+- `DEMOQA_PASSWORD` is a throwaway sandbox credential — same class as the public admin/password123 demo pair, not a secret. It is deterministic on purpose so the login journey can re-authenticate the auth-setup-created user after logging out.
+- DemoQA accounts created by auth-setup (~1 per run) are deliberately left in the sandbox — same rationale as the API teardown note: delete-machinery's failure modes would create false negatives, and the public sandbox is a scratch pad.

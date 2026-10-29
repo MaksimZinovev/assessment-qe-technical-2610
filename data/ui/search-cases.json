@@ -1,0 +1,22 @@
+[
+	{
+		"id": "tc-002",
+		"term": "JavaScript",
+		"expectedTitles": [
+			"Learning JavaScript Design Patterns",
+			"Speaking JavaScript",
+			"Programming JavaScript Applications",
+			"Eloquent JavaScript, Second Edition"
+		]
+	},
+	{
+		"id": "tc-003",
+		"term": "Git Pocket",
+		"expectedTitles": ["Git Pocket Guide"]
+	},
+	{
+		"id": "tc-004",
+		"term": "zzz-no-match",
+		"expectedTitles": []
+	}
+]

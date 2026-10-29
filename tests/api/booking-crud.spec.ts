@@ -10,6 +10,21 @@ const BASE: Booking = {
 	additionalneeds: "Late checkout",
 };
 
+test("booking list — GET /booking returns a non-empty ids index", async ({
+	bookingClient,
+}) => {
+	const response = await bookingClient.getAllBookings();
+	expect(
+		response.status(),
+		"GET /booking should list bookings without auth",
+	).toBe(200);
+	const list = (await response.json()) as { bookingid: number }[];
+	expect(
+		list.length,
+		"the sandbox always has at least one booking to list",
+	).toBeGreaterThan(0);
+});
+
 test("booking lifecycle — create, get, PUT, PATCH, delete", async ({
 	bookingClient,
 	token,

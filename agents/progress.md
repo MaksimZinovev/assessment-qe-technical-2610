@@ -34,14 +34,14 @@
 ### What's Next
 
 1. M5 close: docs consistency pass, ponytail audit of the tree, final verify, full-history anonymization grep, push, Maksim's own Actions-tab CI dispatch as closing evidence
-2. User: populate docs/AI-assistance.md (unblocks Part B), decide orphaned-SHA risk (accept vs request GitHub GC)
+2. User: populate docs/AI-assistance.md (unblocks Part B)
 3. M2b collection add/delete tests — deferred to after M5 (user decision at M3 A4 gate); if run, CI inherits retries: 1 and plain `biome check`
 
 ## Blockers / Risks
 
 - [ ] Same-day deadline (Thu 29 Oct): mitigated by locked cut order — (1) M2b collection tests, (2) UI smoke trim, (3) API negative matrix. Part B + CI never cut.
 - [ ] Third-party targets (demoqa, restful-booker) are flaky: mitigated by retries: 1 (user-fixed permanent, 2026-10-29) and modest workers.
-- [ ] Orphaned pre-rewrite commits (2026-10-29 history rewrite): old SHAs are detached from main but may remain fetchable by direct SHA on the public host until its GC (~90 days). Content was the issuer name in prose — no secrets, tokens never committed. Decision pending at M5 close: accept-and-record, or request the host's support to purge. Peer verified: git ls-remote shows only rewritten main, no stray refs; full-history grep clean.
+- [x] Orphaned pre-rewrite commits (2026-10-29 history rewrite): old SHAs are detached from main but may remain fetchable by direct SHA on the public host until its GC (~90 days). Content was the issuer name in prose — no secrets, tokens never committed. Decision: ACCEPTED (Maksim, relayed 2026-10-29) — no support-GC request; old SHAs lapse with natural host GC. Peer verified: git ls-remote shows only rewritten main, no stray refs; full-history grep clean.
 - [x] Anonymization discipline (2026-10-29): the issuer's name must NEVER appear in committed content — evidence lines say "anonymization grep clean", not the name. The name slipped into this file's M3-close evidence line and was discovered at the next commit gate; full history was rewritten (filter-branch + force-push) and the remote chain re-verified with 0 hits. Gate rule now absolute: the anonymization grep runs at EVERY commit gate, doc-only commits included, with no exceptions. Part B note: the PDF's "include the AI Output in your repo and annotate corrections" stays unmet until docs/AI-assistance.md is populated (user-owned).
 
 ## Decisions Made
@@ -59,6 +59,7 @@
 - **Test titles carry tc-XXX ids (user decision, 2026-10-29)** in the UI suite (tc-001…tc-006, suite order, ids inside the typed data boundary for the search matrix) — reporting/reference by id. API suite predates the convention.
 - **AI harness showcase** = AGENTS.md + live progress.md + init.sh/verify.sh + harness-overview.md + vendored workflow skills (ponytail, slop-scan) in .agents/skills/, mandated by AGENTS.md.
 - **Repo**: stays `assessment-qe-technical-2610`, public, under MaksimZinovev.
+- **Orphaned-SHA risk ACCEPTED** (user decision relayed via peer, 2026-10-29): post-rewrite orphaned SHAs may stay fetchable by direct SHA on the public host until its natural GC (~90 days); content in that history is anonymization-related prose only — no secrets were ever committed. No GitHub support-GC request. Recorded in Blockers/Risks as closed.
 
 ## Files Modified This Session
 

@@ -17,7 +17,7 @@ Prerequisites: Node.js LTS (CI runs Node 24).
 git clone https://github.com/MaksimZinovev/assessment-qe-technical-2610
 cd assessment-qe-technical-2610
 ./scripts/init.sh    # .env from .env.example + npm ci + Playwright browsers + git hooks
-./scripts/verify.sh  # biome → tsc → all 18 tests
+./scripts/verify.sh  # biome → tsc → all 19 tests
 ```
 
 ## Usage
@@ -55,7 +55,7 @@ Requirements are the task's own wording; the comment points at the file and plac
 
 | No | Requirement | Comment |
 | --- | --- | --- |
-| 1 | Suite using the endpoints from the API docs | `support/booking-client.ts` → covers ping, POST /auth, GET /booking, GET/PUT/PATCH/DELETE /booking/:id, POST /booking; GET /booking (ids list) is implemented as `getAllBookings` but no spec exercises it yet |
+| 1 | Suite using the endpoints from the API docs | `support/booking-client.ts` → covers ping, POST /auth, GET /booking, GET/PUT/PATCH/DELETE /booking/:id, POST /booking — all eight documented endpoints exercised (ids list by `tests/api/booking-crud.spec.ts` → booking list test) |
 | 2 | Data-driven approach, appropriate data format | `data/api/booking-create.json` + `data/api/booking-negative.json` → cases imported as typed JSON (`with { type: "json" }`), one spec file per concern |
 | 3 | Positive and negative scenarios | `tests/api/booking-create.spec.ts` (4 positive rows) vs `tests/api/booking-negative.spec.ts` (5 cases: schema violations, missing id, unauth 403) |
 | 4 | Values flow between endpoints | `tests/api/booking-crud.spec.ts` → booking lifecycle test: id from POST reused by GET/PUT/PATCH/DELETE; token arrives from POST /auth via the `token` fixture |
@@ -95,13 +95,14 @@ How the repo steers AI agents on this build: `docs/harness-overview.md`.
 
 ## Test coverage
 
-**18 tests · 8 files · 3 Playwright projects**
+**19 tests · 8 files · 3 Playwright projects**
 
 - **Authentication Setup** (1)
   - API user creation → UI login → session persistence.
-- **API** (12)
+- **API** (13)
   - **Health & Auth** (2) — Ping endpoint, authentication token.
   - **Booking Creation** (4) — Standard, long names, zero price, future dates.
+  - **Booking List** (1) — GET /booking returns a non-empty ids index.
   - **CRUD Lifecycle** (1) — POST → GET → PUT → PATCH → DELETE.
   - **Negative Tests** (5)
     - Invalid payloads: missing price, missing dates, empty body.

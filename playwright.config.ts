@@ -23,8 +23,8 @@ console.log(
  *  - ui-firefox  same suite on Firefox — same storageState auth (cookies are engine-agnostic)
  */
 export default defineConfig({
-	retries: 1, // permanent for this assessment (user decision, 2026-10-29)
-	workers: 3, // modest — both targets are shared public third-party sites
+	retries: 1, 
+	workers: 3,
 	reporter: [["list"], ["html", { open: "never" }]],
 	forbidOnly: !!process.env.CI,
 	use: {

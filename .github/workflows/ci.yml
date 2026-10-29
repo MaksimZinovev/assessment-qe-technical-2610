@@ -3,7 +3,7 @@ name: ci
 # Test CI. Dispatch-only per locked plan — the reviewer/user triggers runs from
 # the Actions tab ("Run workflow") or `gh workflow run`.
 # CI inherits retries: 1 from playwright.config.ts — permanent for this
-# assessment (user decision, 2026-10-29). Do NOT raise it here.
+
 on:
   workflow_dispatch:
     inputs:

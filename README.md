@@ -158,6 +158,8 @@ The same 5 UI scenarios re-run on Firefox as the `ui-firefox` project (same cook
   - **Book Details** (1) - Verify fields after opening a book.
   - **Authentication** (1) - Session restore, logout, re-login.
 
+![tests](assets/tests.png)
+
 ## AI assistance
 
 How AI tooling was used and validated: [docs/AI-assistance.md](docs/AI-assistance.md). Please also see section below "AI agent harness"

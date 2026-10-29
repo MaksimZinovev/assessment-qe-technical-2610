@@ -27,13 +27,13 @@
 
 ### What's In Progress
 
-- [ ] nothing — M3 (CI) awaits a user-approved brief (protocol A4)
+- [ ] M3 (CI) — brief A4-approved by user 2026-10-29 (adjustments: verification must prove the user can trigger runs from the GitHub Actions tab; HTML report artifact uploads on EVERY run; ci.yml stays dispatch-only; M2b deferred until after M5). Implementation in flight.
 
 ### What's Next
 
-1. M3 CI (workflow_dispatch: project + grep inputs); note: CI inherits the user-fixed retries: 1 — flag in the M3 brief
-2. M4 Part B (AI-automated POST /booking + GET /booking/{id}, annotated)
-3. M5 polish (README, docs, slop-scan, final verify, push)
+1. M4 Part B (AI-automated POST /booking + GET /booking/{id}, annotated)
+2. M5 polish (README, docs, slop-scan, final verify, push)
+3. M2b collection add/delete tests — deferred to after M5 (user decision at M3 A4 gate); if run, CI inherits retries: 1 and plain `biome check`
 
 ## Blockers / Risks
 

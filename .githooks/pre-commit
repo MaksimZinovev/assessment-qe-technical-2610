@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Secret-scan gate: blocks the commit when gitleaks detects a secret in the
+# staged changes. Central enforcement lives in .github/workflows/secrets.yml,
+# so a missing local install degrades gracefully instead of blocking.
+set -euo pipefail
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+	echo "==> gitleaks not installed locally — skipping scan (secrets.yml enforces centrally)"
+	exit 0
+fi
+
+exec gitleaks protect --staged --redact

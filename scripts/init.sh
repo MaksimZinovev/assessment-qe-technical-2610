@@ -13,4 +13,7 @@ npm ci
 echo "==> npx playwright install --with-deps"
 npx playwright install --with-deps
 
+echo "==> git config core.hooksPath .githooks"
+git config core.hooksPath .githooks
+
 echo "==> init complete"

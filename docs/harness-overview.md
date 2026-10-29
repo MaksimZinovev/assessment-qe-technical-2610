@@ -13,7 +13,7 @@ agent must not improvise.
 | Scope | What is in and out of this build? | Milestones + cut order in `agents/progress.md` |
 
 The loop: `init.sh` boots the repo → `AGENTS.md` governs behavior → work writes
-state into `progress.md` → `verify.sh` (and later CI) independently confirms it →
+state into `progress.md` → `verify.sh` (and GitHub Actions `ci.yml`) independently confirms it →
 the milestone list bounds what may be built at all.
 
 ## Intentionally out of scope here

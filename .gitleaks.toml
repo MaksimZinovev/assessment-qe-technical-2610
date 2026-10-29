@@ -1,0 +1,9 @@
+# gitleaks config — extends the default ruleset.
+# Only deviation: the committed .env holds PUBLIC demo credentials
+# (restful-booker admin/password123), not secrets — allowlisted by design.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "committed .env contains public demo credentials only"
+paths = ['''(^|/)\.env$''']

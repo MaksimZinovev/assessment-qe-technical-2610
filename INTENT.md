@@ -8,6 +8,7 @@
 - Provide minimal documentation such as ReadMe and a few scoped documents covering specific parts of the project. 
 - use relevant techniques and advice I learned from [Playwright Solutions](https://playwrightsolutions.com/) and [Playwright Documentation](https://playwright.dev)
 - in Readme include section that answers the question "How would you design a good test automation framework" . It will list the building blocks and patterns and will show waht is covered in this repos waht is intentionally out of scope .
+- include playwright lint - Biome includes a Playwright domain with dedicated rules (with "all")
 
 
 ## References 

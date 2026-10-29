@@ -54,6 +54,10 @@ BDD earns its keep when non-technical stakeholders author and read specs in doma
 
 User decision (2026-10-29): every UI-suite test title carries a stable `tc-XXX` id in suite order (tc-001 auth-setup persist → tc-002…004 search matrix → tc-005 detail → tc-006 login), so runs, reports, and references name a test by id rather than prose. The search-matrix ids live inside the typed JSON boundary. The API suite predates the convention and keeps prose titles.
 
+## Diagnostics: native Playwright (user decision, 2026-10-29)
+
+`test.step()` names the phases in specs; `test.info().attach()` drops API response bodies into the HTML report where they help debugging — payloads only, never credentials/tokens. The API client logs each operation and response status with plain `console.info` (one small custom addition; no logging library). Traces are captured on first retry and failure screenshots on failure — both bundle into the HTML report, which CI uploads on every run. Rejected: dedicated logging libraries (pino) — dependency and configuration for zero value at this size. Revisit trigger: framework-scale logging needs (correlation ids, structured sinks).
+
 ## Linting: Biome only
 
 Linting: Biome only, with the native Playwright domain enabled (user decision, 2026-10-29). ESLint + eslint-plugin-playwright: deferred — Biome's Playwright domain covers the anti-patterns that mattered (hardcoded waits, forced clicks, networkidle, missing awaits, element handles); ESLint's residual edge is only the not-yet-migrated advanced rules (e.g. prefer-web-first-assertions parity, biomejs#8961). Revisit trigger: a missing rule we actually need.

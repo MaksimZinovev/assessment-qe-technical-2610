@@ -17,12 +17,14 @@ for (const c of cases) {
 	}) => {
 		const store = new BookStorePage(page);
 		await store.open();
-		await store.search(c.term);
-		await expect
-			.poll(() => store.rowLinks.allTextContents(), {
-				timeout: 15_000,
-				message: `table filters to ${c.expectedTitles.length} row(s) for "${c.term}"`,
-			})
-			.toEqual(c.expectedTitles);
+		await test.step(`filter by "${c.term}" and assert row titles`, async () => {
+			await store.search(c.term);
+			await expect
+				.poll(() => store.rowLinks.allTextContents(), {
+					timeout: 15_000,
+					message: `table filters to ${c.expectedTitles.length} row(s) for "${c.term}"`,
+				})
+				.toEqual(c.expectedTitles);
+		});
 	});
 }

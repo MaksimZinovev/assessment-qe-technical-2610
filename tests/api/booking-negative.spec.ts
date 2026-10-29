@@ -16,20 +16,22 @@ const rows: NegativeRow[] = rawRows;
 
 for (const row of rows) {
 	test(`negative — ${row.case}`, async ({ request }) => {
-		const response = await request.fetch(row.path, {
-			method: row.method,
-			data: row.body,
-		});
-		expect(
-			response.status(),
-			`negative "${row.case}" should return the probed actual status`,
-		).toBe(row.expect.status);
-		if (row.expect.bodyContains) {
+		await test.step(`send ${row.method} ${row.path}`, async () => {
+			const response = await request.fetch(row.path, {
+				method: row.method,
+				data: row.body,
+			});
 			expect(
-				await response.text(),
-				`negative "${row.case}" body should name the error`,
-			).toContain(row.expect.bodyContains);
-		}
+				response.status(),
+				`negative "${row.case}" should return the probed actual status`,
+			).toBe(row.expect.status);
+			if (row.expect.bodyContains) {
+				expect(
+					await response.text(),
+					`negative "${row.case}" body should name the error`,
+				).toContain(row.expect.bodyContains);
+			}
+		});
 	});
 }
 
@@ -60,18 +62,20 @@ test("negative — mutations without auth are refused with 403", async ({
 		depositpaid: true,
 		bookingdates: { checkin: "2026-01-01", checkout: "2026-01-02" },
 	};
-	for (const method of ["PUT", "PATCH", "DELETE"] as const) {
-		const response = await request.fetch(`/booking/${id}`, {
-			method,
-			data: mutation,
-		});
-		expect(
-			response.status(),
-			`unauthenticated ${method} should be refused (no-cookie probe, bogus≡missing)`,
-		).toBe(403);
-		expect(
-			await response.text(),
-			`unauthenticated ${method} body should say Forbidden`,
-		).toContain("Forbidden");
-	}
+	await test.step("probe PUT/PATCH/DELETE without an auth cookie", async () => {
+		for (const method of ["PUT", "PATCH", "DELETE"] as const) {
+			const response = await request.fetch(`/booking/${id}`, {
+				method,
+				data: mutation,
+			});
+			expect(
+				response.status(),
+				`unauthenticated ${method} should be refused (no-cookie probe, bogus≡missing)`,
+			).toBe(403);
+			expect(
+				await response.text(),
+				`unauthenticated ${method} body should say Forbidden`,
+			).toContain("Forbidden");
+		}
+	});
 });

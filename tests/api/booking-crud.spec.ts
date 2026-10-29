@@ -24,48 +24,60 @@ test("booking lifecycle — create, get, PUT, PATCH, delete", async ({
 		"number",
 	);
 	expect(echoed, "created booking should echo the payload").toEqual(BASE);
+	test.info().attach("create-echo.json", {
+		body: JSON.stringify(echoed, null, 2),
+		contentType: "application/json",
+	});
 
-	const fetched = await bookingClient.getBooking(id);
-	expect(fetched.status(), "get booking by id should return 200").toBe(200);
-	expect(
-		await fetched.json(),
-		"fetched booking should match the created payload",
-	).toEqual(BASE);
+	await test.step("get created booking by id", async () => {
+		const fetched = await bookingClient.getBooking(id);
+		expect(fetched.status(), "get booking by id should return 200").toBe(200);
+		expect(
+			await fetched.json(),
+			"fetched booking should match the created payload",
+		).toEqual(BASE);
+	});
 
 	const updated: Booking = {
 		...BASE,
 		firstname: "CrudUpdated",
 		totalprice: 500,
 	};
-	const put = await bookingClient.updateBooking(id, updated, token);
-	expect(put.status(), "PUT update should return 200").toBe(200);
-	expect(
-		await put.json(),
-		"PUT response should reflect the new payload",
-	).toEqual(updated);
+	await test.step("replace fields with a full PUT update", async () => {
+		const put = await bookingClient.updateBooking(id, updated, token);
+		expect(put.status(), "PUT update should return 200").toBe(200);
+		expect(
+			await put.json(),
+			"PUT response should reflect the new payload",
+		).toEqual(updated);
+	});
 
 	const merged: Booking = {
 		...updated,
 		lastname: "Patched",
 		depositpaid: false,
 	};
-	const patch = await bookingClient.patchBooking(
-		id,
-		{ lastname: "Patched", depositpaid: false },
-		token,
-	);
-	expect(patch.status(), "PATCH update should return 200").toBe(200);
-	expect(
-		await patch.json(),
-		"PATCH response should merge the partial update",
-	).toEqual(merged);
+	await test.step("merge a partial update with PATCH", async () => {
+		const patch = await bookingClient.patchBooking(
+			id,
+			{ lastname: "Patched", depositpaid: false },
+			token,
+		);
+		expect(patch.status(), "PATCH update should return 200").toBe(200);
+		expect(
+			await patch.json(),
+			"PATCH response should merge the partial update",
+		).toEqual(merged);
+	});
 
-	const deleted = await bookingClient.deleteBooking(id, token);
-	expect(
-		deleted.status(),
-		"delete success should return 201 Created (probed actual, not 204)",
-	).toBe(201);
+	await test.step("delete the booking and confirm it is gone", async () => {
+		const deleted = await bookingClient.deleteBooking(id, token);
+		expect(
+			deleted.status(),
+			"delete success should return 201 Created (probed actual, not 204)",
+		).toBe(201);
 
-	const gone = await bookingClient.getBooking(id);
-	expect(gone.status(), "get after delete should return 404").toBe(404);
+		const gone = await bookingClient.getBooking(id);
+		expect(gone.status(), "get after delete should return 404").toBe(404);
+	});
 });

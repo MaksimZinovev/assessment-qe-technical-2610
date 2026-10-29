@@ -56,7 +56,7 @@ User decision (2026-10-29): every UI-suite test title carries a stable `tc-XXX` 
 
 ## Linting: Biome only
 
-ESLint + eslint-plugin-playwright: DEFERRED (user decision, 2026-10-29) — near-total overlap at this suite size, `test.only` already guarded by `forbidOnly` in CI, single-linter authority beats two-linter confusion. Revisit trigger: enough contributors/suites that mechanical enforcement of Playwright anti-patterns (waitForTimeout, element handles, conditional expects) pays for a second linter. Until then, Biome remains the only linter for the Playwright suite.
+Linting: Biome only, with the native Playwright domain enabled (user decision, 2026-10-29). ESLint + eslint-plugin-playwright: deferred — Biome's Playwright domain covers the anti-patterns that mattered (hardcoded waits, forced clicks, networkidle, missing awaits, element handles); ESLint's residual edge is only the not-yet-migrated advanced rules (e.g. prefer-web-first-assertions parity, biomejs#8961). Revisit trigger: a missing rule we actually need.
 
 ## Credentials & teardown (UI)
 

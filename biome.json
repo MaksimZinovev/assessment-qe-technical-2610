@@ -4,5 +4,9 @@
 	"files": {
 		"includes": ["**/*.ts", "**/*.js", "**/*.json", "!**/node_modules"]
 	},
-	"linter": { "enabled": true, "rules": { "preset": "recommended" } }
+	"linter": {
+		"enabled": true,
+		"domains": { "playwright": "all" },
+		"rules": { "preset": "recommended" }
+	}
 }

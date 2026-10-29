@@ -3,7 +3,7 @@
 ## Current State
 
 **Last Updated:** 2026-10-29
-**Active Feature:** M2-complete — Quality Engineering Technical Test, both tasks
+**Active Feature:** M3-complete — Quality Engineering Technical Test; CI live on github.com/MaksimZinovev/assessment-qe-technical-2610 (dispatch-only, gitleaks two layers); next: M4 Part B brief at the A4 gate
 
 ## Status
 
@@ -27,7 +27,7 @@
 
 ### What's In Progress
 
-- [ ] M3 (CI) — brief A4-approved by user 2026-10-29 (adjustments: verification must prove the user can trigger runs from the GitHub Actions tab; HTML report artifact uploads on EVERY run; ci.yml stays dispatch-only; M2b deferred until after M5). Implementation in flight.
+- [x] **M3 (CI) — CLOSED** 2026-10-29. Brief A4-approved by user (adjustments: user-triggerable from the Actions tab; report artifact on EVERY run; dispatch-only confirmed; M2b deferred until after M5). Commits 79583fa (workflow + gitleaks layers + hooks) and f1a1acf (fixes from real runs: actions v4→v5 for the Node 20 deprecation; secrets red run 40832283625 was a gitleaks-action differential-scan plumbing failure on fresh history — unresolvable base revision, ZERO leaks — fixed with GITLEAKS_LOG_OPTS=--all, probed locally 0 leaks first). Evidence: local verify 18 passed (1.2m), slop-scan 0, anonymization grep clean; remote ci 40832604685 + 40832895855 green (the latter dispatched by MaksimZinovev himself — the user-trigger proof), secrets 40832512332 green, HTML report artifact uploaded every run. Public repo: github.com/MaksimZinovev/assessment-qe-technical-2610. Peer review (agent-WN5JKC): APPROVED, hooks hook live-tested 0 leaks.
 
 ### What's Next
 

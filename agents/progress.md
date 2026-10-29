@@ -29,6 +29,8 @@
 
 - [x] **M3 (CI) — CLOSED** 2026-10-29. Brief A4-approved by user (adjustments: user-triggerable from the Actions tab; report artifact on EVERY run; dispatch-only confirmed; M2b deferred until after M5). Commits 79583fa (workflow + gitleaks layers + hooks) and f1a1acf (fixes from real runs: actions v4→v5 for the Node 20 deprecation; secrets red run 40832283625 was a gitleaks-action differential-scan plumbing failure on fresh history — unresolvable base revision, ZERO leaks — fixed with GITLEAKS_LOG_OPTS=--all, probed locally 0 leaks first). Evidence: local verify 18 passed (1.2m), slop-scan 0, anonymization grep clean; remote ci 40832604685 + 40832895855 green (the latter dispatched by MaksimZinovev himself — the user-trigger proof), secrets 40832512332 green, HTML report artifact uploaded every run. Public repo: github.com/MaksimZinovev/assessment-qe-technical-2610. Peer review (agent-WN5JKC): APPROVED, hooks hook live-tested 0 leaks.
 
+- [ ] **M4 (Part B) — NARROWED to stub delivery.** User Plannotator review of the M4 brief (pn-21baab, 6 annotations): docs/part-b/ transcript + annotations OUT OF SCOPE; no adopted suite spec. Deliverable = docs/AI-assistance.md stub + README reference; USER populates the AI doc themselves later. Logging decision implemented separately first (loggin.md: Option 1 native + one Option 2 addition → commit e697458).
+
 ### What's Next
 
 1. M4 Part B (AI-automated POST /booking + GET /booking/{id}, annotated)

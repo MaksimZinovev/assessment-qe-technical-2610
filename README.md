@@ -20,3 +20,7 @@ Prerequisites: Node.js LTS.
 
 - `ci.yml` — manual trigger: repo → **Actions → ci → Run workflow** → pick project (all/api/ui) + optional grep. Runs biome (Playwright domain) → tsc → Playwright (retries: 1 per config); uploads the HTML report on every run.
 - `secrets.yml` — automatic on push/PR: gitleaks full-history scan. The pre-commit hook (wired by `init.sh`) does the same for staged changes when gitleaks is installed locally.
+
+## AI assistance
+
+How AI tooling was used and validated: [docs/AI-assistance.md](docs/AI-assistance.md).

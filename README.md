@@ -123,7 +123,13 @@ The build was also an agent-harness exercise: AI agents did the implementation, 
 
 - [AGENTS.md](AGENTS.md) — standing agent rules: minimal-code mandate, quality gate before every commit, tool hierarchy.
 - [agents/progress.md](agents/progress.md) — agent state log: milestone briefs, checkpoints, decisions; work survives session boundaries.
-- [.agents/skills/](.agents/skills/) — vendored skills in the [agentskills.io](https://agentskills.io) spec: `ponytail` (fewest lines that work), `slop-scan` (AI-slop checks before commits).
+- [.agents/skills/](.agents/skills/) — this repo's vendored skills ([agentskills.io](https://agentskills.io) spec):
+  - `ponytail` — forces the smallest code that works; no speculative layers.
+  - `slop-scan` — detects AI-associated slop in JS/TS code before commits.
+- `grill-me` — a relentless interview that sharpens a plan or design before implementation.
+- [playwright](https://github.com/MaksimZinovev/pi-agent-config/blob/main/skills/playwright/SKILL.md) — Playwright-specific guidance (locators, fixtures, config) applied while writing the suites.
+- [ego-browser](https://github.com/citrolabs/ego-lite/blob/main/skills/ego-browser/SKILL.md) — Chromium browser operated by users and AI agents for browser automation, QA, and app review.
+- [learn-harness-engineering](https://github.com/walkinglabs/learn-harness-engineering) — harness engineering beginner tutorial, from 0 to 1.
 - [scripts/verify.sh](scripts/verify.sh) + [ci.yml](.github/workflows/ci.yml) — the gate agents check their work against before reporting; GitHub Actions re-runs it independently on dispatch.
 - Learnings reused selectively from previous public builds: [assessment-qa-engineer-nsw-revenue](https://github.com/MaksimZinovev/assessment-qa-engineer-nsw-revenue) (Playwright API suite), [automation-bookstore-yaml](https://github.com/MaksimZinovev/automation-bookstore-yaml) (Azure DevOps multi-stage pipeline), [tau-advanced-playwright](https://github.com/MaksimZinovev/tau-advanced-playwright) (Advanced Playwright course).
 - Framework knowledge: [Playwright documentation](https://playwright.dev), [Playwright Solutions](https://playwrightsolutions.com) patterns, lint via [Biome's Playwright domain](https://biomejs.dev/).

@@ -177,17 +177,17 @@ The build was also an agent-harness exercise: AI agents did the implementation, 
 - [ego-browser](https://github.com/citrolabs/ego-lite/blob/main/skills/ego-browser/SKILL.md) - Chromium browser operated by users and AI agents for browser automation, QA, and app review.
 - [learn-harness-engineering](https://github.com/walkinglabs/learn-harness-engineering) - harness engineering beginner tutorial, from 0 to 1.
 - [scripts/verify.sh](scripts/verify.sh) + [ci.yml](.github/workflows/ci.yml) - the gate agents check their work against before reporting; GitHub Actions re-runs it independently on dispatch.
-- Learnings reused selectively from previous public builds: [assessment-qa-engineer-nsw-revenue](https://github.com/MaksimZinovev/assessment-qa-engineer-nsw-revenue) (Playwright API suite), [automation-bookstore-yaml](https://github.com/MaksimZinovev/automation-bookstore-yaml) (Azure DevOps multi-stage pipeline), [tau-advanced-playwright](https://github.com/MaksimZinovev/tau-advanced-playwright) (Advanced Playwright course).
-- Framework knowledge: [Playwright documentation](https://playwright.dev), [Playwright Solutions](https://playwrightsolutions.com) patterns, lint via [Biome's Playwright domain](https://biomejs.dev/).
 
 ## Design decisions
 
-Short list of the choices a reviewer will notice first; full reasoning in `docs/design-decisions.md`:.For more details, please see [framework-design.md](docs/framework-design.md)
+Short list of the choices a reviewer will notice first; full reasoning in `docs/design-decisions.md`, and the framework-design checklist — how would you design a good test automation framework — is at [docs/framework-design.md](docs/framework-design.md).
 
 - Data-driven tests via typed JSON imports - shape drift is a compile error, no loader code.
 - API suites stay thin: a typed service object (`BookingClient`) plus a small fixture layer.
 - No BDD, no wrapper layers beyond Page Objects, native Playwright diagnostics, `test.describe` grouping only for multi-test specs.
 - Credentials are public demo values (published in Restful-Booker's docs); the env-file pattern is demonstrated as it would be used for real secrets.
+
+Framework knowledge: [Playwright documentation](https://playwright.dev), [Playwright Solutions](https://playwrightsolutions.com) patterns, lint via [Biome's Playwright domain](https://biomejs.dev/). Prior public builds reused selectively: [assessment-qa-engineer-nsw-revenue](https://github.com/MaksimZinovev/assessment-qa-engineer-nsw-revenue) (Playwright API suite), [automation-bookstore-yaml](https://github.com/MaksimZinovev/automation-bookstore-yaml) (Azure DevOps multi-stage pipeline), [tau-advanced-playwright](https://github.com/MaksimZinovev/tau-advanced-playwright) (Advanced Playwright course).
 
 ## Logging
 

@@ -1,4 +1,4 @@
-import { defineConfig } from "@playwright/test";
+import { defineConfig, devices } from "@playwright/test";
 import "@dotenvx/dotenvx/config";
 
 /**
@@ -6,6 +6,7 @@ import "@dotenvx/dotenvx/config";
  *  - auth-setup  creates the DemoQA storageState once (tests/auth.setup.ts → .auth/state.json)
  *  - api         Restful-Booker suite (tests/api), no browser auth needed
  *  - ui          Book Store suite (tests/ui), reuses the storageState after auth-setup
+ *  - ui-firefox  same suite on Firefox — same storageState auth (cookies are engine-agnostic)
  */
 export default defineConfig({
 	retries: 1, // permanent for this assessment (user decision, 2026-10-29)
@@ -34,6 +35,16 @@ export default defineConfig({
 			use: {
 				baseURL: "https://demoqa.com",
 				storageState: ".auth/state.json",
+			},
+		},
+		{
+			name: "ui-firefox",
+			testDir: "tests/ui",
+			dependencies: ["auth-setup"],
+			use: {
+				baseURL: "https://demoqa.com",
+				storageState: ".auth/state.json",
+				...devices["Desktop Firefox"],
 			},
 		},
 	],

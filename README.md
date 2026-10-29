@@ -22,7 +22,7 @@ Prerequisites: Node.js LTS (CI runs Node 24).
 git clone https://github.com/MaksimZinovev/assessment-qe-technical-2610
 cd assessment-qe-technical-2610
 ./scripts/init.sh    # .env from .env.example + npm ci + Playwright browsers + git hooks
-./scripts/verify.sh  # biome → tsc → all 19 tests
+./scripts/verify.sh  # biome → tsc → all 24 test runs (19 scenarios; ui re-runs on Firefox)
 ```
 
 ## Usage
@@ -49,7 +49,7 @@ Requirements are the task's own wording; the comment points at the file and plac
 
 | No | Requirement | Comment |
 | --- | --- | --- |
-| 1 | Pick an open-source automation framework | `playwright.config.ts` - one config, three projects; framework choice reasoning in docs/design-decisions.md |
+| 1 | Pick an open-source automation framework | `playwright.config.ts` - one config, four projects; framework choice reasoning in docs/design-decisions.md |
 | 2 | Develop automated tests for the site | `tests/ui/` - 5 tests, tc-002…tc-006 in specs + `tests/auth.setup.ts` (tc-001) |
 | 3 | Registration may be left out | Deliberately out of scope; the journey starts at login: `tests/ui/login.spec.ts` → tc-006 |
 | 4 | Design patterns and maintainable code & test data | `pages/` = Page Objects, `support/fixtures.ts` = fixture DI, `data/ui/*.json` = typed JSON test data |
@@ -121,7 +121,7 @@ assessment-qe-technical-2610/
 │   └── auth.setup.ts                # auth-setup project → .auth/state.json
 ├── biome.json                       # lint + format, native Playwright domain
 ├── package.json / package-lock.json
-├── playwright.config.ts             # projects: auth-setup, api, ui (+dependencies)
+├── playwright.config.ts             # projects: auth-setup, api, ui, ui-firefox
 ├── tsconfig.json                    # resolveJsonModule: true
 ├── .env                             # committed: public demo creds only
 └── .env.example                     # template init.sh copies when .env is missing
@@ -131,7 +131,9 @@ How the repo steers AI agents on this build: `docs/harness-overview.md`.
 
 ## Test coverage
 
-**19 tests · 8 files · 3 Playwright projects**
+**19 scenarios · 8 files · 4 Playwright projects**
+
+The same 5 UI scenarios re-run on Firefox as the `ui-firefox` project (same cookie-based auth, so `npm run test-firefox` covers it) - 24 runs in total.
 
 - **Authentication Setup** (1)
   - API user creation → UI login → session persistence.

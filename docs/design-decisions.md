@@ -54,6 +54,10 @@ BDD earns its keep when non-technical stakeholders author and read specs in doma
 
 User decision (2026-10-29): every UI-suite test title carries a stable `tc-XXX` id in suite order (tc-001 auth-setup persist → tc-002…004 search matrix → tc-005 detail → tc-006 login), so runs, reports, and references name a test by id rather than prose. The search-matrix ids live inside the typed JSON boundary. The API suite predates the convention and keeps prose titles.
 
+## Test grouping: describe() used selectively (user decision, 2026-10-29)
+
+`test.describe()` wraps only specs that declare multiple related tests: `booking-create` (4 payload rows), `booking-negative` (5 cases incl. unauth mutations), `search` (3 filter rows). Specs stay bare when the wrapper adds nothing: `booking-crud` is one chained journey, `login` and `book-detail` are single journeys, `health.spec` groups only health probes. Reasoning: the group exists for the HTML report and `--grep` filtering; with one test per file the prefix merely repeats what the test title already says. Steps (`test.step()`) stay the in-test narrative and are unaffected — grouping and steps are complementary, not interchangeable.
+
 ## Diagnostics: native Playwright (user decision, 2026-10-29)
 
 `test.step()` names the phases in specs; `test.info().attach()` drops API response bodies into the HTML report where they help debugging — payloads only, never credentials/tokens. The API client logs each operation and response status with plain `console.info` (one small custom addition; no logging library). Traces are captured on first retry and failure screenshots on failure — both bundle into the HTML report, which CI uploads on every run. Rejected: dedicated logging libraries (pino) — dependency and configuration for zero value at this size. Revisit trigger: framework-scale logging needs (correlation ids, structured sinks).

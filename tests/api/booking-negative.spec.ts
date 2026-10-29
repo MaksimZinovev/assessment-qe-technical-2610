@@ -14,68 +14,70 @@ interface NegativeRow {
 // body: unknown on purpose — these payloads intentionally violate the Booking shape.
 const rows: NegativeRow[] = rawRows;
 
-for (const row of rows) {
-	test(`negative — ${row.case}`, async ({ request }) => {
-		await test.step(`send ${row.method} ${row.path}`, async () => {
-			const response = await request.fetch(row.path, {
-				method: row.method,
-				data: row.body,
+test.describe("booking negative", () => {
+	for (const row of rows) {
+		test(`negative — ${row.case}`, async ({ request }) => {
+			await test.step(`send ${row.method} ${row.path}`, async () => {
+				const response = await request.fetch(row.path, {
+					method: row.method,
+					data: row.body,
+				});
+				expect(
+					response.status(),
+					`negative "${row.case}" should return the probed actual status`,
+				).toBe(row.expect.status);
+				if (row.expect.bodyContains) {
+					expect(
+						await response.text(),
+						`negative "${row.case}" body should name the error`,
+					).toContain(row.expect.bodyContains);
+				}
 			});
-			expect(
-				response.status(),
-				`negative "${row.case}" should return the probed actual status`,
-			).toBe(row.expect.status);
-			if (row.expect.bodyContains) {
+		});
+	}
+
+	test("negative — mutations without auth are refused with 403", async ({
+		request,
+		bookingClient,
+	}) => {
+		// Unauth mutations target a live id (unauth PUT/PATCH/DELETE on a missing id is
+		// unprobed). Created via the happy-path client; no-cookie = the one probed variant.
+		const created = await bookingClient.createBooking({
+			firstname: "Unauth",
+			lastname: "Probe",
+			totalprice: 1,
+			depositpaid: false,
+			bookingdates: { checkin: "2026-01-01", checkout: "2026-01-02" },
+			additionalneeds: "None",
+		});
+		expect(
+			created.status(),
+			"setup: create booking before probing unauth mutations",
+		).toBe(200);
+		const { bookingid: id } = (await created.json()) as { bookingid: number };
+
+		const mutation = {
+			firstname: "X",
+			lastname: "Y",
+			totalprice: 1,
+			depositpaid: true,
+			bookingdates: { checkin: "2026-01-01", checkout: "2026-01-02" },
+		};
+		await test.step("probe PUT/PATCH/DELETE without an auth cookie", async () => {
+			for (const method of ["PUT", "PATCH", "DELETE"] as const) {
+				const response = await request.fetch(`/booking/${id}`, {
+					method,
+					data: mutation,
+				});
+				expect(
+					response.status(),
+					`unauthenticated ${method} should be refused (no-cookie probe, bogus≡missing)`,
+				).toBe(403);
 				expect(
 					await response.text(),
-					`negative "${row.case}" body should name the error`,
-				).toContain(row.expect.bodyContains);
+					`unauthenticated ${method} body should say Forbidden`,
+				).toContain("Forbidden");
 			}
 		});
-	});
-}
-
-test("negative — mutations without auth are refused with 403", async ({
-	request,
-	bookingClient,
-}) => {
-	// Unauth mutations target a live id (unauth PUT/PATCH/DELETE on a missing id is
-	// unprobed). Created via the happy-path client; no-cookie = the one probed variant.
-	const created = await bookingClient.createBooking({
-		firstname: "Unauth",
-		lastname: "Probe",
-		totalprice: 1,
-		depositpaid: false,
-		bookingdates: { checkin: "2026-01-01", checkout: "2026-01-02" },
-		additionalneeds: "None",
-	});
-	expect(
-		created.status(),
-		"setup: create booking before probing unauth mutations",
-	).toBe(200);
-	const { bookingid: id } = (await created.json()) as { bookingid: number };
-
-	const mutation = {
-		firstname: "X",
-		lastname: "Y",
-		totalprice: 1,
-		depositpaid: true,
-		bookingdates: { checkin: "2026-01-01", checkout: "2026-01-02" },
-	};
-	await test.step("probe PUT/PATCH/DELETE without an auth cookie", async () => {
-		for (const method of ["PUT", "PATCH", "DELETE"] as const) {
-			const response = await request.fetch(`/booking/${id}`, {
-				method,
-				data: mutation,
-			});
-			expect(
-				response.status(),
-				`unauthenticated ${method} should be refused (no-cookie probe, bogus≡missing)`,
-			).toBe(403);
-			expect(
-				await response.text(),
-				`unauthenticated ${method} body should say Forbidden`,
-			).toContain("Forbidden");
-		}
 	});
 });

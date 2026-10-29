@@ -63,7 +63,7 @@
 ## Evidence of Completion
 
 - [x] Design session complete: 3 rounds, 21 questions, all branches settled
-- [x] Tests pass (M2 gate): `./scripts/verify.sh` → biome clean → TSC-OK → playwright **18 passed (56.9s)**, exit 0 — 12 api (browserless) + tc-001 auth-setup (real chromium login) + tc-002…006 ui; re-run green post-tc-IDs
+- [x] Tests pass (M2 gate): `./scripts/verify.sh` → biome clean → TSC-OK → playwright **18 passed (56.9s)**, exit 0 — 12 api (browserless) + tc-001 auth-setup (real chromium login) + tc-002…006 ui; re-run green post-tc-IDs. Final gate with Biome Playwright domain: 18 passed (39.2s), slop-scan 0. **M2 gate user-approved 2026-10-29** (commits b636b2d, 9748993)
 - [x] Type check clean: `tsc --noEmit` → no errors (strict mode; config, 7 specs, 3 pages, support — incl. the tc-XXX id field crossing the JSON boundary)
 - [x] Lint clean: `biome check .` → exit 0 (Biome 2.6, preset recommended; TS/JS/JSON scope keeps planner docs untouched)
 - [x] slop-scan scan . → **0 findings, repo score 0.00**

@@ -3,7 +3,7 @@
 ## Current State
 
 **Last Updated:** 2026-10-29
-**Active Feature:** M5 polish — README rewritten from the user's drafted skeleton, docs + final gates; CI live on github.com/MaksimZinovev/assessment-qe-technical-2610 (dispatch-only, gitleaks two layers)
+**Active Feature:** M5-complete — final deliverable state; awaiting MaksimZinovev's closing CI dispatch URL (run URL appended below when green)
 
 ## Status
 
@@ -31,11 +31,12 @@
 
 - [x] **M4 (diagnostics + Part B stub) — CLOSED** 2026-10-29. Part B NARROWED by user Plannotator review (pn-21baab, 6 annotations): docs/part-b/ transcript + annotations OUT OF SCOPE; no adopted suite spec; deliverable = docs/AI-assistance.md stub (0999c66) the USER populates later. Logging (user's loggin.md: Option 1 native + one Option 2 addition — BookingClient async + console.info, screenshot only-on-failure → 809c993), steps + attachments closing 4 loggin gaps (API-lifecycle steps in all API specs, search + auth.setup stepped, create-echo attachments, design-decisions entry → 426a6dd), describe() grouping per user advisory resolved against live --list (booking-create/negative/search wrapped; single-journey + health bare → 4f02e2c). PDF Part B "include AI Output + annotate" stays UNMET until the user populates docs/AI-assistance.md. Peer review (agent-WN5JKC): APPROVED + M5 green-lit with flags.
 
+- [x] **M5 (polish + README v2 + environment management) — CLOSED** 2026-10-29. Delivered across: d49068a (README from the user-drafted skeleton: task-notes tables No/Requirement/Comment, progressive disclosure; M4 close record), 93f7556 (GET /booking ids-list test — all eight documented endpoints now exercised; 18→19 scenarios, user-approved), ff37740 + f26a54f (AI agent harness section; itemized skill references with verified source links incl. learn-harness-engineering), 8bf6e91 (README v2: grilling-format structure tree; docs/framework-design.md — INTENT's "how would you design a test automation framework" item; docs/AI-assistance.md populated by Maksim; @smoke tags + test-smoke script; unslop vendored), a4e387e (ui-firefox project — same UI suite on Desktop Firefox; 19 scenarios × 2 browser projects = 24 runs), 1e8e850 (environment management: TEST_ENV + API_BASE_URL/UI_BASE_URL via .env, config validation + startup print, file-scoped baseURL removed from auth.setup). Evidence at close head 1e8e850: verify.sh **24 passed (1.2m)**, biome 0 fixes, tsc clean, slop-scan **0**, --list 24 tests / 8 files / 4 projects, README 199/200 lines, anonymization greps clean (working tree + full history). Closing CI run: MaksimZinovev dispatches from the Actions tab (project: all); run URL appended below on green — the same user-trigger proof pattern as M3. M2b collection tests remain deferred until after the user's close (decision at M3 A4 gate).
+
 ### What's Next
 
-1. M5 close: docs consistency pass, ponytail audit of the tree, final verify, full-history anonymization grep, push, Maksim's own Actions-tab CI dispatch as closing evidence
-2. User: populate docs/AI-assistance.md (unblocks Part B)
-3. M2b collection add/delete tests — deferred to after M5 (user decision at M3 A4 gate); if run, CI inherits retries: 1 and plain `biome check`
+1. MaksimZinovev: dispatch the closing CI run from the Actions tab (ci → project: all) → run URL recorded as M5 final evidence
+2. M2b collection add/delete tests — deferred until after the M5 close completes (user decision at M3 A4 gate); if run, CI inherits retries: 1 and plain `biome check`
 
 ## Blockers / Risks
 

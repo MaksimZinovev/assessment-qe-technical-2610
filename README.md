@@ -162,8 +162,8 @@ How AI tooling was used and validated: [docs/AI-assistance.md](docs/AI-assistanc
 
 ## AI agent harness
 
-> the software infrastructure that enables a language model to perform tasks by providing tools, memory, execution environments, and guardrails. It essentially transforms a model into an operational agent capable of completing real-world tasks rather than just responding to prompts
-> 
+> the software infrastructure that enables a language model to perform tasks by providing tools, memory, execution environments, and guardrails. It essentially transforms a model into an operational agent capable of completing real-world tasks rather than just responding to prompts.
+
 The build was also an agent-harness exercise: AI agents did the implementation, and the repository carries their rules and memory.
 
 - [AGENTS.md](AGENTS.md) - standing agent rules: minimal-code mandate, quality gate before every commit, tool hierarchy.

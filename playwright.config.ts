@@ -14,6 +14,7 @@ export default defineConfig({
 	forbidOnly: !!process.env.CI,
 	use: {
 		trace: "on-first-retry",
+		screenshot: "only-on-failure",
 	},
 	projects: [
 		{

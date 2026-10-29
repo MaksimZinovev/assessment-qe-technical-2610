@@ -14,51 +14,72 @@ export interface Booking {
 export class BookingClient {
 	constructor(private readonly api: APIRequestContext) {}
 
-	authToken(username: string, password: string): Promise<APIResponse> {
-		return this.api.post("/auth", { data: { username, password } });
+	/** Minimal request/status logging — keeps plain runs debuggable without a logging library. */
+	private log(op: string, response: APIResponse): APIResponse {
+		console.info(`[booking] ${op} → ${response.status()}`);
+		return response;
 	}
 
-	ping(): Promise<APIResponse> {
-		return this.api.get("/ping");
+	async authToken(username: string, password: string): Promise<APIResponse> {
+		return this.log(
+			"POST /auth",
+			await this.api.post("/auth", { data: { username, password } }),
+		);
 	}
 
-	createBooking(booking: Booking): Promise<APIResponse> {
-		return this.api.post("/booking", { data: booking });
+	async ping(): Promise<APIResponse> {
+		return this.log("GET /ping", await this.api.get("/ping"));
 	}
 
-	getAllBookings(): Promise<APIResponse> {
-		return this.api.get("/booking");
+	async createBooking(booking: Booking): Promise<APIResponse> {
+		return this.log(
+			`POST /booking (${booking.firstname} ${booking.lastname})`,
+			await this.api.post("/booking", { data: booking }),
+		);
 	}
 
-	getBooking(id: number): Promise<APIResponse> {
-		return this.api.get(`/booking/${id}`);
+	async getAllBookings(): Promise<APIResponse> {
+		return this.log("GET /booking", await this.api.get("/booking"));
 	}
 
-	updateBooking(
+	async getBooking(id: number): Promise<APIResponse> {
+		return this.log(`GET /booking/${id}`, await this.api.get(`/booking/${id}`));
+	}
+
+	async updateBooking(
 		id: number,
 		booking: Booking,
 		token: string,
 	): Promise<APIResponse> {
-		return this.api.put(`/booking/${id}`, {
-			data: booking,
-			headers: { Cookie: `token=${token}` },
-		});
+		return this.log(
+			`PUT /booking/${id}`,
+			await this.api.put(`/booking/${id}`, {
+				data: booking,
+				headers: { Cookie: `token=${token}` },
+			}),
+		);
 	}
 
-	patchBooking(
+	async patchBooking(
 		id: number,
 		partial: Partial<Booking>,
 		token: string,
 	): Promise<APIResponse> {
-		return this.api.patch(`/booking/${id}`, {
-			data: partial,
-			headers: { Cookie: `token=${token}` },
-		});
+		return this.log(
+			`PATCH /booking/${id}`,
+			await this.api.patch(`/booking/${id}`, {
+				data: partial,
+				headers: { Cookie: `token=${token}` },
+			}),
+		);
 	}
 
-	deleteBooking(id: number, token: string): Promise<APIResponse> {
-		return this.api.delete(`/booking/${id}`, {
-			headers: { Cookie: `token=${token}` },
-		});
+	async deleteBooking(id: number, token: string): Promise<APIResponse> {
+		return this.log(
+			`DELETE /booking/${id}`,
+			await this.api.delete(`/booking/${id}`, {
+				headers: { Cookie: `token=${token}` },
+			}),
+		);
 	}
 }

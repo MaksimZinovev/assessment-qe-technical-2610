@@ -7,7 +7,7 @@ Automated tests for a two-part Quality Engineering exercise:
 - **Task 1 - Web UI**: the demoqa [Book Store](https://demoqa.com/books) site - login, table search, book details. Playwright + TypeScript, Page Object pattern.
 - **Task 2 - REST API**: the [Restful-Booker](https://restful-booker.herokuapp.com/) API - health, auth, full booking CRUD plus negative paths. Same framework, service-object pattern.
 
-Goals: show coding style, use design patterns that keep code and test data maintainable, and produce a build ready to wire into Continuous Delivery infrastructure.
+Goals: show coding style, use design patterns that keep code and test data maintainable, and produce a build ready to wire into Continuous Delivery infrastructure. Demonstrate the ability to design and implement a test automation framework, and to use AI tooling to assist in the work. Demonstrate ability to design and implement basic agent harness to improve the quality of AI-generate results, increase productivity of human engineers across the entire cycle of test automation project.
 
 Both suites share one package and run as four Playwright projects: `auth-setup`, `api`, `ui`, and `ui-firefox`, which re-runs the UI suite on Firefox.
 
